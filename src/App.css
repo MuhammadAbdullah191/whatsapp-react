@@ -29,6 +29,10 @@
 	padding-left:35px;  
 }
 
+.white-bg{
+	background-color: white;
+}
+
 .search:focus{
 	outline: none;
 }
@@ -52,3 +56,20 @@
 	font-size: 12px;
 }
 
+.chat-background{
+	background-image: url("/src/assets/background.jpeg");
+	background-size: contain;
+}
+
+.message{
+	max-width: 50%;
+}
+
+.sender-msg{
+	float: right;
+	background-color: rgb(218, 252, 212);
+}
+
+.receiver-msg{
+	background-color: white;
+}

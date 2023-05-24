@@ -7,10 +7,10 @@ function ProfileHeader() {
 						<img className='profile-header-logo rounded-circle' src={require('../../assets/people1.jpg')} /> 
 					</div>
 					<div className='d-flex w-50 justify-content-between'>
-						<i class="fa-solid fa-users fs-5"></i>
-						<i class="fa-solid fa-spinner fs-5"></i>
-						<i class="fa-solid fa-comment-dots fs-5"></i>
-						<i class="fa-solid fa-ellipsis-vertical fs-5"></i>
+						<i className="fa-solid fa-users fs-5"></i>
+						<i className="fa-solid fa-spinner fs-5"></i>
+						<i className="fa-solid fa-comment-dots fs-5"></i>
+						<i className="fa-solid fa-ellipsis-vertical fs-5"></i>
 					</div>
 				</div>
 			</div>
