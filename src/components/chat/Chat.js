@@ -25,7 +25,7 @@ function Chat() {
         <div className="chat-background h-100">
           <ChatMessages />
         </div>
-        <div className="position-fixed bottom-0 w-75">
+        <div className="position-fixed bottom-0 chat-width">
           <ChatBox />
         </div>
       </div>

@@ -73,3 +73,57 @@
 .receiver-msg{
 	background-color: white;
 }
+
+.green-bg {
+	background-color: rgb(25, 167, 133);
+	height: 30vh;
+}
+
+.grey-bg{
+	height: 70vh;
+	background-color:rgb(240, 242, 245)
+}
+
+.login-form{
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: 10vh 20vh 10vh 20vh;
+}
+
+.login-card {
+	
+}
+
+.fa-whatsapp{
+	color: rgb(37, 228, 123);
+}
+
+.bottom-border-input {
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid #ced4da;
+	padding: 0.375rem 0.75rem;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+.profile-width {
+	width: 20vw;
+	min-width: 313px;
+}
+
+.chat-width {
+	width: 80vw;
+	min-width: none;
+}
+
+.custom-width-75 {
+  width: 75vw;
+}

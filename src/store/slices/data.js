@@ -6,7 +6,8 @@ export const dataSlice = createSlice({
     currentRoom: null,
     currentUser: null,
     selectedContact: null,
-    contacts: null
+    contacts: null,
+    messages: null,
   },
   reducers: {
     setRoom: (state, action) => {
@@ -23,10 +24,13 @@ export const dataSlice = createSlice({
     },
     setSelectedContact: (state, action) => {
       state.selectedContact = action.payload;
-    }
+    },
+    setMessages: (state, action) => {
+      state.messages = action.payload;
+    },
   }
 });
 
-export const { setRoom, removeRoom, setUser, setContacts, setSelectedContact } = dataSlice.actions;
+export const { setRoom, removeRoom, setUser, setContacts, setSelectedContact, setMessages } = dataSlice.actions;
 
 export default dataSlice.reducer;

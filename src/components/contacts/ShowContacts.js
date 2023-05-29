@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { CrudApi } from '../../apis/shared/crudApi';
 import Loader from '../shared/Loader';
 import { useDispatch } from 'react-redux';
-import { setRoom, setContacts, setSelectedContact } from '../../store/slices/data';
+import { setRoom, setContacts, setSelectedContact, setMessages } from '../../store/slices/data';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
 import consumer from '../../cable';
 
 function ShowContacts() {
 	const [data, setData] = useState(null);
+	const messages = useSelector((state) => state.data.messages);
 	const currentUser = useSelector((state) => state.data.currentUser);
 	const currentRoom = useSelector((state) => state.data.currentRoom);
 	const dispatch = useDispatch();
@@ -28,8 +29,7 @@ function ShowContacts() {
 		consumer.subscriptions.subscriptions.forEach((subscription) => {
 			consumer.subscriptions.remove(subscription);
 		});
-		
-		RoomApi.getCurrentRoom(currentUser, e)
+		RoomApi.getCurrentRoom(currentUser.id, e)
 			.then((res)=>{
 				const room_id = res.data.id
 				dispatch(setRoom(room_id));
@@ -42,21 +42,11 @@ function ShowContacts() {
 						console.log('Disconnected from Action Cable');
 					},
 					received: (data) => {
-						if(data.message.user_id != currentUser){
-							console.log('Received data from Action Cable:', data);
-							const messageHtml = `
-							<div className="d-flex flex-column align-items-start">
-							<div key={index} class="message p-2 m-1 shadow-sm rounded d-inline-block receiver-msg">
-								<p class="m-0 p-0 d-inline">${data.message.content}</p>
-							</div>
-							</div>
-						`;
-						
-							const chatMessagesContainer = document.querySelector(".container.chat-messages");
-							chatMessagesContainer.innerHTML += messageHtml;
-
-							chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-						}
+						console.log('Received data from Action Cable:', data);
+						dispatch(setMessages(data.messages))
+					
+						const chatMessagesContainer = document.querySelector(".container.chat-messages");
+						chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
 					},
 				});
 			}).catch((err)=>{
@@ -68,8 +58,8 @@ function ShowContacts() {
 		return (
 			<div className="contacts pe-2 h-100 overflow-scroll">
 				{data.map((contact, index) => {
-					if (currentUser === contact.id) {
-						return null; // Skip rendering the contact
+					if (currentUser.id === contact.id) {
+						return null;
 					}
 					return (
 						<div className="convo border-bottom p-2 d-flex flex-row" onClick={() => { setConvo(contact.id) }}>

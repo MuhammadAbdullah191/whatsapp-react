@@ -1,5 +1,4 @@
-import { axiosInstance } from '../config';
-
+import axiosInstance from "../config";
 export const RoomApi = {
   getCurrentRoom: (id1,id2) => {
     return axiosInstance.request({
