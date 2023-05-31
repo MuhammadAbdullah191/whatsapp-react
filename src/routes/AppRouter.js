@@ -4,6 +4,7 @@ import App from '../App';
 import Login from '../pages/login/login';
 import OtpScreen from '../pages/login/otpScreen';
 import NotFound from '../pages/notFound/NotFound';
+import ProfileEdit from '../pages/edit/edit';
 
 function AppRouter() {
   return (
@@ -11,6 +12,7 @@ function AppRouter() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/verifyOtp" element={<OtpScreen />} />
+        <Route path="/edit" element={<ProfileEdit />} />
         <Route path="/" element={<App />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

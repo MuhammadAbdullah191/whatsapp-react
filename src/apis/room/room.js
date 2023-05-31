@@ -6,10 +6,10 @@ export const RoomApi = {
       url: `/rooms/find_by_user_ids?user1_id=${id1}&user2_id=${id2}`
     });
   },
-  getAllMessages: (id) => {
+  getAllMessages: (id, per_page) => {
     return axiosInstance.request({
       method: 'GET',
-      url: `/rooms/${id}/messages`
+      url: `/rooms/${id}/messages?per_page=${per_page}`
     });
   },
   sendMessage: (room_id, content, user_id) => {

@@ -2,14 +2,16 @@ import { useState, useEffect } from 'react';
 import { CrudApi } from '../../apis/shared/crudApi';
 import Loader from '../shared/Loader';
 import { useDispatch } from 'react-redux';
-import { setRoom, setContacts, setSelectedContact, setMessages } from '../../store/slices/data';
+import { setRoom, setContacts, setSelectedContact, setMessages, setTest } from '../../store/slices/data';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
 import consumer from '../../cable';
 
 function ShowContacts() {
 	const [data, setData] = useState(null);
-	const messages = useSelector((state) => state.data.messages);
+	const messages = useSelector((state) => {
+		return state.data.messages
+	});
 	const currentUser = useSelector((state) => state.data.currentUser);
 	const currentRoom = useSelector((state) => state.data.currentRoom);
 	const dispatch = useDispatch();
@@ -43,8 +45,7 @@ function ShowContacts() {
 					},
 					received: (data) => {
 						console.log('Received data from Action Cable:', data);
-						dispatch(setMessages(data.messages))
-					
+						dispatch(setTest(data.message))
 						const chatMessagesContainer = document.querySelector(".container.chat-messages");
 						chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
 					},

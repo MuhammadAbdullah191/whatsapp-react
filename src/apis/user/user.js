@@ -17,12 +17,14 @@ export const UserApi = {
         otp: otp
       }
     })
+  },
+
+  updateUser: (id, data) => {
+    return axiosInstance.request({
+      method: 'Patch',
+      url: `/users/${id}/`,
+      data: data
+    })
   }
 
-  // getAllMessages: (id) => {
-  //   return axiosInstance.request({
-  //     method: 'GET',
-  //     url: `/rooms/${id}/messages`
-  //   });
-  // }
 };

@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
-import { setMessages } from '../../store/slices/data';
-import { useDispatch } from 'react-redux';
 
 function ChatBox() {
-	const dispatch = useDispatch()
 	const messages = useSelector((state) => state.data.messages);
   const [message, setMessage] = useState('');
 	const currentUser = useSelector((state) => state.data.currentUser);
@@ -16,7 +13,6 @@ function ChatBox() {
   };
 
 	const sendMessage = () => {
-		dispatch(setMessages([...messages, {content: message, user_id: currentUser.id}]))
 		RoomApi.sendMessage(currentRoom, message, currentUser.id)
 			.then((res)=>{
 				console.log('message saved successfully', res)
@@ -24,8 +20,6 @@ function ChatBox() {
 				console.log(err)
 			})
 
-		const chatMessagesContainer = document.querySelector(".container.chat-messages");	
-		chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
 
 		setMessage("");
 	}

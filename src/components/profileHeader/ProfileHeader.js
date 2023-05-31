@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 function ProfileHeader() {
 	return (
 		<div className="profile-header">
@@ -10,7 +12,7 @@ function ProfileHeader() {
 						<i className="fa-solid fa-users fs-5"></i>
 						<i className="fa-solid fa-spinner fs-5"></i>
 						<i className="fa-solid fa-comment-dots fs-5"></i>
-						<i className="fa-solid fa-ellipsis-vertical fs-5"></i>
+						<Link to="/edit"><i className="fa-solid fa-ellipsis-vertical fs-5 text-black"></i></Link>
 					</div>
 				</div>
 			</div>

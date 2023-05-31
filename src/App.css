@@ -101,6 +101,10 @@
 	color: rgb(37, 228, 123);
 }
 
+.fa-whatsapp-bg{
+	background-color: rgb(254, 238, 207);
+}
+
 .bottom-border-input {
 	border: none;
 	border-radius: 0;
@@ -124,6 +128,7 @@
 	min-width: none;
 }
 
-.custom-width-75 {
-  width: 75vw;
+.edit-img{
+	width: 100px;
+	height: 100px;
 }

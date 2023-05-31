@@ -2,7 +2,7 @@ import ChatHeader from "../chatHeader/ChatHeader";
 import ChatMessages from "../chatMessages/ChatMessages";
 import ChatBox from "../chatBox/ChatBox";
 import { useSelector } from 'react-redux';
-import { useState } from "react";
+import Landing from "../landing.js/Landing";
 
 function Chat() {
   const currentRoom = useSelector((state) => state.data.currentRoom);
@@ -32,9 +32,7 @@ function Chat() {
     );
   }else{
     return(
-      <h1 className="text-center">
-        Select a chat to start conversation
-      </h1>
+      <Landing/>
     )
   }
 }
