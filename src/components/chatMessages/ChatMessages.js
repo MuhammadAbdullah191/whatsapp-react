@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
 import Loader from '../shared/Loader';
@@ -14,13 +14,15 @@ function ChatMessages() {
   const messages = useSelector((state) => state.data.messages);
   const [hasMore, setHasMore] = useState(true);
   const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (currentRoom) {
-      RoomApi.getAllMessages(currentRoom, limit)
+      RoomApi.getAllMessages(currentRoom, page)
         .then((res) => {
           dispatch(setMessages(res.data));
-          setLimit(limit+5)
+          setLimit(limit+10)
+          setPage(page+1)
           if (res.data.length < limit) {
             setHasMore(false);
           }
@@ -32,18 +34,34 @@ function ChatMessages() {
   }, [currentRoom]);
 
   const fetchData = () => {
-    RoomApi.getAllMessages(currentRoom, limit)
+    RoomApi.getAllMessages(currentRoom, page)
       .then((res) => {
-        dispatch(setMessages(res.data));
-        if (res.data.length < limit) {
+        let newMessages = [...messages,...res.data]
+        dispatch(setMessages(newMessages));
+        if (newMessages.length < limit) {
           setHasMore(false);
         }
-        setLimit(limit+5)
+        setLimit(limit+10)
+        setPage(page+1)
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  // const scrollableDivRef = useRef(null);
+
+  //   useEffect(() => {
+  //     scrollToBottom();
+  //   }, [messages]);
+
+  //   const scrollToBottom = () => {
+  //     if (scrollableDivRef.current) {
+  //       scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
+  //     }
+  //   };
+  //   ref={scrollableDivRef}
+
 
   if (messages != null) {
     return (

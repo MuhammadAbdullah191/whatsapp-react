@@ -1,10 +1,38 @@
+import React, { useState } from 'react';
+import { CrudApi } from '../../apis/shared/crudApi';
+import { useDispatch } from 'react-redux';
+import { setContacts } from '../../store/slices/data';
+
 function SearchContact() {
-	return ( 
-		<div className="d-flex justify-content-center alighn-items-center p-2 border-bottom">
-			<input className="search bg-light w-100" type="text" placeholder="Search or start a new chat"/>
-			<i className="fas fa-search search-icon"></i>
-		</div>
-	 );
+	const dispatch = useDispatch()
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearch = () => {
+    CrudApi.getAll('users',searchValue)
+      .then((res) => {
+				dispatch(setContacts(res.data.users))
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  return (
+    <div className="d-flex justify-content-center align-items-center p-2 border-bottom">
+      <input
+        className="search bg-light w-100"
+        type="text"
+        placeholder="Search or start a new chat"
+        value={searchValue}
+        onChange={handleChange}
+      />
+      <i className="fas fa-search search-icon" onClick={handleSearch}></i>
+    </div>
+  );
 }
 
 export default SearchContact;

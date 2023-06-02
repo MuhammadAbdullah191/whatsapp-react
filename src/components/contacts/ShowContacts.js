@@ -8,18 +8,17 @@ import { RoomApi } from '../../apis/room/room';
 import consumer from '../../cable';
 
 function ShowContacts() {
-	const [data, setData] = useState(null);
 	const messages = useSelector((state) => {
 		return state.data.messages
 	});
 	const currentUser = useSelector((state) => state.data.currentUser);
 	const currentRoom = useSelector((state) => state.data.currentRoom);
+	const contacts = useSelector((state) => state.data.contacts);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-    CrudApi.getAll('users')
+    CrudApi.getAll('users','')
       .then((res) => {
-				setData(res.data.users);
 				dispatch(setContacts(res.data.users))
       })
       .catch((err) => {
@@ -55,17 +54,17 @@ function ShowContacts() {
 			})
 	}
 
-	if(data){
+	if(contacts){
 		return (
 			<div className="contacts pe-2 h-100 overflow-scroll">
-				{data.map((contact, index) => {
+				{contacts.map((contact, index) => {
 					if (currentUser.id === contact.id) {
 						return null;
 					}
 					return (
 						<div className="convo border-bottom p-2 d-flex flex-row" onClick={() => { setConvo(contact.id) }}>
 							<div>
-								<img className='convo-img rounded-circle' src={require('../../assets/people1.jpg')} />
+								<img className='convo-img rounded-circle' src={contact.avatar_url ? contact.avatar_url : require('../../assets/unknown.jpeg')} />
 							</div>
 							<div className="w-100 d-flex flex-row justify-content-between">
 								<div className="convo-details ms-3 fw-normal d-flex- flex-col">
@@ -78,7 +77,7 @@ function ShowContacts() {
 								</div>
 								<div className="convo-time">
 									<p className="m-0">
-										4:53 pm
+										{/* 4:53 pm */}
 									</p>
 								</div>
 							</div>

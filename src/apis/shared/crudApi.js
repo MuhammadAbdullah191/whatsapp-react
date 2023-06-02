@@ -1,10 +1,10 @@
 import axiosInstance from "../config";
 
 export const CrudApi = {
-  getAll: (model) => {
+  getAll: (model, query) => {
     return axiosInstance.request({
       method: 'GET',
-      url: `/${model}`
+      url: `/${model}${query ? `?query=${query}` : ''}`
     });
   },
 

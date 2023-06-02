@@ -27,8 +27,11 @@ function ProfileEdit() {
     UserApi.updateUser(currentUser.id, data)
       .then((res) => {
         if (res.status === 200) {
+					console.log(res)
+					setSelectedImage(null)
           localStorage.setItem('user', JSON.stringify(res.data.user));
           dispatch(setUser(res.data.user));
+					document.getElementById('imageInput').value = '';
         }
       })
       .catch((err) => {
@@ -46,7 +49,7 @@ function ProfileEdit() {
         </div>
         <div className="text-center mt-5">
           <img
-            src={currentUser.image ? currentUser.image : require('../../assets/unknown.jpeg')}
+            src={currentUser.avatar_url ? currentUser.avatar_url : require('../../assets/unknown.jpeg')}
             alt="Profile Photo"
             className="rounded-circle mb-4 edit-img"
           />
