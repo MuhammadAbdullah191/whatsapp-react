@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setMessages } from '../../store/slices/data';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ConvoTop from '../convoTop/ConvoTop';
+import MessageItem from './MessageItem'
 
 function ChatMessages() {
   const dispatch = useDispatch();
@@ -18,14 +19,12 @@ function ChatMessages() {
 
   useEffect(() => {
     if (currentRoom) {
-      RoomApi.getAllMessages(currentRoom, page)
+      RoomApi.getAllMessages(currentRoom, 1)
         .then((res) => {
           dispatch(setMessages(res.data));
-          setLimit(limit+10)
-          setPage(page+1)
-          if (res.data.length < limit) {
-            setHasMore(false);
-          }
+          setHasMore(res.data.length >= 10);
+          setLimit(20);
+          setPage(2);
         })
         .catch((err) => {
           console.log(err);
@@ -85,32 +84,10 @@ function ChatMessages() {
             scrollableTarget="scrollableDiv"
             endMessage={<ConvoTop/>}
           >
-            {messages.map((message, index) => {
-              if (message.user_id === currentUser.id) {
-                return (
-                  <div className="d-flex flex-column align-items-end">
-                    <div
-                      key={index}
-                      className="message p-2 m-1 shadow-sm rounded d-inline-block sender-msg"
-                    >
-                      <p className="m-0 p-0 d-inline">{message.content}</p>
-                    </div>
-                  </div>
-                );
-              } else {
-                return (
-                  <div className="d-flex flex-column align-items-start">
-                    <div
-                      key={index}
-                      className="message p-2 m-1 shadow-sm rounded d-inline-block receiver-msg"
-                    >
-                      <p className="m-0 p-0 d-inline">{message.content}</p>
-                    </div>
-                  </div>
-                );
-              }
-            })}
-          </InfiniteScroll>
+            {messages.map((message, index) => (
+            <MessageItem key={index} message={message} currentUser={currentUser} />
+            ))}
+          </InfiniteScroll> 
         </div>
       </div>
     );

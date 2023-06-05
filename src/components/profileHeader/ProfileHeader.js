@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { removeLocalStorage } from '../../helpers/localStorage';
+import { getAvatarUrl } from '../../helpers/avatarUrl';
 
 function ProfileHeader() {
 	const currentUser = useSelector((state) => state.data.currentUser);
 	const navigate = useNavigate()
 	const handleLogout = () => {
-		localStorage.removeItem('user');
-		localStorage.removeItem('token');
+
+		removeLocalStorage('user');
+		removeLocalStorage('token');
 		navigate('/login')
 	}
 
@@ -16,7 +19,7 @@ function ProfileHeader() {
 			<div className="vh-20 px-3 py-3">
 				<div className="d-flex flex-row justify-content-between align-items-center">
 					<div>
-						<img className='profile-header-logo rounded-circle' src={currentUser.avatar_url ? currentUser.avatar_url : require('../../assets/unknown.jpeg')} /> 
+						<img className='profile-header-logo rounded-circle' src={getAvatarUrl(currentUser)} /> 
 					</div>
 					<div className='d-flex w-50 justify-content-between'>
 						<i className="fa-solid fa-users fs-5"></i>

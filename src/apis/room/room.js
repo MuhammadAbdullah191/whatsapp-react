@@ -3,9 +3,10 @@ export const RoomApi = {
   getCurrentRoom: (id1,id2) => {
     return axiosInstance.request({
       method: 'GET',
-      url: `/rooms/find_by_user_ids?user1_id=${id1}&user2_id=${id2}`
+      url: `/rooms/${id1}?user1_id=${id1}&user2_id=${id2}`
     });
   },
+  
   getAllMessages: (id, page) => {
     return axiosInstance.request({
       method: 'GET',

@@ -6,6 +6,8 @@ import { UserApi } from '../../apis/user/user';
 import { setUser } from '../../store/slices/data';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setLocalStorage } from '../../helpers/localStorage';
+import { getAvatarUrl } from '../../helpers/avatarUrl';
 
 function ProfileEdit() {
   const dispatch = useDispatch();
@@ -13,6 +15,21 @@ function ProfileEdit() {
   const [username, setUsername] = useState(currentUser.username);
   const [status, setStatus] = useState(currentUser.status);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleRemovePhoto = () => {
+    const confirmed = window.confirm('Are you sure you want to remove the photo?');
+    if (confirmed) {
+      UserApi.removeImage(currentUser.id).then((res) => {
+        if (res.status === 200) {
+          setLocalStorage('user',res.data.user)
+          dispatch(setUser(res.data.user));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,11 +44,10 @@ function ProfileEdit() {
     UserApi.updateUser(currentUser.id, data)
       .then((res) => {
         if (res.status === 200) {
-					console.log(res)
-					setSelectedImage(null)
-          localStorage.setItem('user', JSON.stringify(res.data.user));
+          setSelectedImage(null);
+          setLocalStorage('user',res.data.user)
           dispatch(setUser(res.data.user));
-					document.getElementById('imageInput').value = '';
+          document.getElementById('imageInput').value = '';
         }
       })
       .catch((err) => {
@@ -39,17 +55,19 @@ function ProfileEdit() {
       });
   };
 
-
   if (currentUser) {
     return (
       <div className="container mt-4">
         <div className="d-flex justify-content-between align-items-center mb-3">
-					<Link to="/"><i class="fa-solid fa-chevron-left text-black fs-2"></i></Link>
+          <Link to="/">
+            <i class="fa-solid fa-chevron-left text-black fs-2"></i>
+          </Link>
           <h2 className="text-center">Edit Profile</h2>
+          <p></p>
         </div>
         <div className="text-center mt-5">
           <img
-            src={currentUser.avatar_url ? currentUser.avatar_url : require('../../assets/unknown.jpeg')}
+            src={getAvatarUrl(currentUser)}
             alt="Profile Photo"
             className="rounded-circle mb-4 edit-img"
           />
@@ -61,45 +79,45 @@ function ProfileEdit() {
               accept="image/*"
               onChange={(e) => setSelectedImage(e.target.files[0])}
             />
-            <button className="btn btn-secondary">Remove Photo</button>
+            <button className="btn btn-secondary" onClick={handleRemovePhoto} disabled={!currentUser.avatar_url}>
+              Remove Photo
+            </button>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="username" className="form-label">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              className="form-control"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="status" className="form-label">
-              Status
-            </label>
-            <input
-              type="text"
-              id="status"
-              className="form-control"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="phone" className="form-label">
-              Phone
-            </label>
-            <input type="text" id="phone" className="form-control" disabled value={currentUser.phone} />
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Save Changes
-          </button>
-        </form>
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">
+            Username
+          </label>
+          <input
+            type="text"
+            id="username"
+            className="form-control"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="status" className="form-label">
+            Status
+          </label>
+          <input
+            type="text"
+            id="status"
+            className="form-control"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="phone" className="form-label">
+            Phone
+          </label>
+          <input type="text" id="phone" className="form-control" disabled value={currentUser.phone} />
+        </div>
+        <button type="submit" onClick={handleSubmit} className="btn btn-primary">
+          Save Changes
+        </button>
       </div>
     );
   } else {

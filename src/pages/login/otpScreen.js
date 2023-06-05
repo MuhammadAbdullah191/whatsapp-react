@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserApi } from "../../apis/user/user";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import SvgIcon from "../../components/shared/svgIcon";
+import { AuthApi } from "../../apis/auth/authApi";
+import { setLocalStorage } from "../../helpers/localStorage";
+import { Link } from "react-router-dom";
 
 
 function OtpScreen() {
@@ -13,6 +16,18 @@ function OtpScreen() {
 	const [inputValue, setInputValue] = useState('');
 	const [isValid, setIsValid] = useState(true);
 	const [errMessage, setErrMessage] = useState(null);
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		AuthApi.verifyUser()
+    .then((res)=>{
+      if(res.status == 200){
+        navigate('/')
+      }
+    }).catch((err)=>{
+			setLoading(false)
+    })
+  }, [navigate]);
 
 	function handleChange(event) {
     const value = event.target.value;
@@ -29,8 +44,8 @@ function OtpScreen() {
 			UserApi.verifyOtp(phone, inputValue)
 				.then((res)=>{
 					if(res.status == 200){
-						localStorage.setItem('user', JSON.stringify(res.data.user));
-						localStorage.setItem('token', res.data.token);
+						setLocalStorage('user',res.data.user)
+						setLocalStorage('token',res.data.token)
 						navigate(`/`);
 					}
 				}).catch((err)=>{
@@ -56,6 +71,7 @@ function OtpScreen() {
 					<div className="p-2 text-muted d-flex flex-column justify-content-center align-items-center">
 						<p className="m-0 p-1">Use Whatsapp on Your Computer</p>
 						<p className="m-0 p-1">Enter your Otp to start using whatsapp</p>
+						{/* <p className="m-0 p-1">Did'nt receive otp <Link to={'/login'}>Please verify number again</Link></p> */}
 						<SvgIcon/>
 
 						<div class="mt-2 text-center">

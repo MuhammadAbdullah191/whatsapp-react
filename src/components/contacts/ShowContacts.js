@@ -6,6 +6,7 @@ import { setRoom, setContacts, setSelectedContact, setMessages, setTest } from '
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
 import consumer from '../../cable';
+import { getAvatarUrl } from '../../helpers/avatarUrl';
 
 function ShowContacts() {
 	const messages = useSelector((state) => {
@@ -64,7 +65,7 @@ function ShowContacts() {
 					return (
 						<div className="convo border-bottom p-2 d-flex flex-row" onClick={() => { setConvo(contact.id) }}>
 							<div>
-								<img className='convo-img rounded-circle' src={contact.avatar_url ? contact.avatar_url : require('../../assets/unknown.jpeg')} />
+								<img className='convo-img rounded-circle' src={getAvatarUrl(contact)} />
 							</div>
 							<div className="w-100 d-flex flex-row justify-content-between">
 								<div className="convo-details ms-3 fw-normal d-flex- flex-col">

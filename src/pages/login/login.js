@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserApi } from "../../apis/user/user";
 import { useNavigate } from "react-router-dom";
+import { AuthApi } from "../../apis/auth/authApi";
 import SvgIcon from "../../components/shared/svgIcon";
+import Loader from "../../components/shared/Loader";
 
 function Login() {
 	const navigate = useNavigate();
 	const [inputValue, setInputValue] = useState('');
 	const [isValid, setIsValid] = useState(true);
+	const [loading, setLoading] = useState(true)
+
+	useEffect(() => {
+		AuthApi.verifyUser()
+    .then((res)=>{
+      if(res.status == 200){
+        navigate('/')
+      }
+    }).catch((err)=>{
+			setLoading(false)
+    })
+  }, [navigate]);
 
 	function handleChange(event) {
     const value = event.target.value;
@@ -31,7 +45,12 @@ function Login() {
     }
 	}
 
-	return ( 
+	if(loading){
+		return(
+			<Loader/>
+		)
+	}else{
+		return ( 
 		<div className="vh-100 vw-100">
 			<div className="vw-100 green-bg"></div>
 			<div className="grey-bg"></div>
@@ -56,6 +75,8 @@ function Login() {
 			</div>
 		</div>
 	 );
+	}
+	
 }
 
 export default Login;
