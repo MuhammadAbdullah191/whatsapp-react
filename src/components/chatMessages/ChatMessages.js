@@ -7,6 +7,7 @@ import { setMessages } from '../../store/slices/data';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ConvoTop from '../convoTop/ConvoTop';
 import MessageItem from './MessageItem'
+import { errHandler } from '../../helpers/logouthelper';
 
 function ChatMessages() {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ function ChatMessages() {
           setPage(2);
         })
         .catch((err) => {
-          console.log(err);
+          errHandler(err)
         });
     }
   }, [currentRoom]);
@@ -47,19 +48,6 @@ function ChatMessages() {
         console.log(err);
       });
   };
-
-  // const scrollableDivRef = useRef(null);
-
-  //   useEffect(() => {
-  //     scrollToBottom();
-  //   }, [messages]);
-
-  //   const scrollToBottom = () => {
-  //     if (scrollableDivRef.current) {
-  //       scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
-  //     }
-  //   };
-  //   ref={scrollableDivRef}
 
 
   if (messages != null) {
@@ -84,9 +72,13 @@ function ChatMessages() {
             scrollableTarget="scrollableDiv"
             endMessage={<ConvoTop/>}
           >
-            {messages.map((message, index) => (
-            <MessageItem key={index} message={message} currentUser={currentUser} />
-            ))}
+          {messages.map((message, index) => (
+            message.user_id === currentUser.id ? (
+              <MessageItem key={index} message={message} messageClass={'sender-msg'} alignmentClass={'align-items-end'} />
+            ) : (
+              <MessageItem key={index} message={message} messageClass={'receiver-msg'} alignmentClass={'align-items-start'} />
+            )
+          ))}
           </InfiniteScroll> 
         </div>
       </div>

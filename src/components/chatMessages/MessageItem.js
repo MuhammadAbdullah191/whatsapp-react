@@ -1,9 +1,4 @@
-import { isMessageFromCurrentUser } from "../../helpers/getMessageClass";
-
-function MessageItem({ message, currentUser }) {
-  const isCurrentUser = isMessageFromCurrentUser(message, currentUser);
-  const messageClass = isCurrentUser ? "sender-msg" : "receiver-msg";
-  const alignmentClass = isCurrentUser ? "align-items-end" : "align-items-start";
+function MessageItem({ message, messageClass, alignmentClass }) {
 
   return (
     <div className={`d-flex flex-column ${alignmentClass}`}>

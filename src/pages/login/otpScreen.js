@@ -6,7 +6,7 @@ import SvgIcon from "../../components/shared/svgIcon";
 import { AuthApi } from "../../apis/auth/authApi";
 import { setLocalStorage } from "../../helpers/localStorage";
 import { Link } from "react-router-dom";
-
+import { getLocalStorage } from "../../helpers/localStorage";
 
 function OtpScreen() {
 	const location = useLocation();
@@ -16,17 +16,14 @@ function OtpScreen() {
 	const [inputValue, setInputValue] = useState('');
 	const [isValid, setIsValid] = useState(true);
 	const [errMessage, setErrMessage] = useState(null);
-	const [loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
-		AuthApi.verifyUser()
-    .then((res)=>{
-      if(res.status == 200){
-        navigate('/')
-      }
-    }).catch((err)=>{
-			setLoading(false)
-    })
+		const token = getLocalStorage('token')
+		console.log(token)
+		if(token){
+			navigate('/')
+		}
   }, [navigate]);
 
 	function handleChange(event) {

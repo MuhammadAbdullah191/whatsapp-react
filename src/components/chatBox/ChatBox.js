@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
+import { errHandler } from '../../helpers/logouthelper';
 
 function ChatBox() {
   const messages = useSelector((state) => state.data.messages);
@@ -25,7 +26,7 @@ function ChatBox() {
           console.log('message saved successfully', res);
         })
         .catch((err) => {
-          console.log(err);
+          errHandler(err)
         });
 
       setMessage('');
@@ -38,7 +39,7 @@ function ChatBox() {
       <i className="fa-solid fa-paperclip p-2 fs-4"></i>
       <input
         className="search bg-white p-2"
-        style={{width: '85%'}}
+        // style={{width: '85%'}}
         type="text"
         placeholder="Type a Message"
         value={message}

@@ -20,6 +20,7 @@ function ProfileHeader() {
 				<div className="d-flex flex-row justify-content-between align-items-center">
 					<div>
 						<img className='profile-header-logo rounded-circle' src={getAvatarUrl(currentUser)} /> 
+						<span>{currentUser?.phone}</span>
 					</div>
 					<div className='d-flex w-50 justify-content-between'>
 						<i className="fa-solid fa-users fs-5"></i>

@@ -13,6 +13,7 @@ export const RoomApi = {
       url: `/rooms/${id}/messages?page=${page}`
     });
   },
+  
   sendMessage: (room_id, content, user_id) => {
     return axiosInstance.request({
       method: 'Post',

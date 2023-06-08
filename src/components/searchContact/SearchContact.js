@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CrudApi } from '../../apis/shared/crudApi';
 import { useDispatch } from 'react-redux';
 import { setContacts } from '../../store/slices/data';
+import { errHandler } from '../../helpers/logouthelper';
 
 function SearchContact() {
 	const dispatch = useDispatch()
@@ -13,7 +14,7 @@ function SearchContact() {
 				dispatch(setContacts(res.data.users))
       })
       .catch((err) => {
-        console.log(err);
+        errHandler(err)
       });
   };
 

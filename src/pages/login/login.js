@@ -4,22 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { AuthApi } from "../../apis/auth/authApi";
 import SvgIcon from "../../components/shared/svgIcon";
 import Loader from "../../components/shared/Loader";
+import { getLocalStorage } from "../../helpers/localStorage";
 
 function Login() {
 	const navigate = useNavigate();
 	const [inputValue, setInputValue] = useState('');
 	const [isValid, setIsValid] = useState(true);
-	const [loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
-		AuthApi.verifyUser()
-    .then((res)=>{
-      if(res.status == 200){
-        navigate('/')
-      }
-    }).catch((err)=>{
-			setLoading(false)
-    })
+		const token = getLocalStorage('token')
+		console.log(token)
+		if(token){
+			navigate('/')
+		}
   }, [navigate]);
 
 	function handleChange(event) {

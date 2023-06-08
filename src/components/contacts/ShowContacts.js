@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { CrudApi } from '../../apis/shared/crudApi';
 import Loader from '../shared/Loader';
 import { useDispatch } from 'react-redux';
-import { setRoom, setContacts, setSelectedContact, setMessages, setTest } from '../../store/slices/data';
+import { setRoom, setContacts, setSelectedContact, setUser, setTest } from '../../store/slices/data';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
 import consumer from '../../cable';
 import { getAvatarUrl } from '../../helpers/avatarUrl';
+import { useNavigate } from "react-router-dom";
+import { getLocalStorage, removeLocalStorage } from "./../../helpers/localStorage"
+import { errHandler } from '../../helpers/logouthelper';
 
 function ShowContacts() {
 	const messages = useSelector((state) => {
@@ -15,15 +18,19 @@ function ShowContacts() {
 	const currentUser = useSelector((state) => state.data.currentUser);
 	const currentRoom = useSelector((state) => state.data.currentRoom);
 	const contacts = useSelector((state) => state.data.contacts);
-	const dispatch = useDispatch();
+	const dispatch = useDispatch()
+  const navigate = useNavigate()
 
 	useEffect(() => {
     CrudApi.getAll('users','')
       .then((res) => {
+				console.log('i am here')
 				dispatch(setContacts(res.data.users))
+				let user = getLocalStorage('user');
+        dispatch(setUser(user))
       })
       .catch((err) => {
-        console.log(err);
+				errHandler(err)
       });
   }, []);
 
