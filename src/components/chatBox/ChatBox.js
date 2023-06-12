@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
-import { errHandler } from '../../helpers/logouthelper';
+import { toast } from 'react-toastify';
+import { MyContext } from '../../pages/dashboard/dashboard'
+import { scrollHelper } from '../../helpers/animationHelper';
 
 function ChatBox() {
   const messages = useSelector((state) => state.data.messages);
   const [message, setMessage] = useState('');
   const currentUser = useSelector((state) => state.data.currentUser);
   const currentRoom = useSelector((state) => state.data.currentRoom);
+  const errHandler = React.useContext(MyContext);
 
   const handleChange = (event) => {
     setMessage(event.target.value);
@@ -23,13 +26,17 @@ function ChatBox() {
     if (message.trim() !== '') {
       RoomApi.sendMessage(currentRoom, message, currentUser.id)
         .then((res) => {
-          console.log('message saved successfully', res);
+          toast('Message sent successfully')
+          setTimeout(() => {
+            scrollHelper()
+          },100)
+          setMessage('');
         })
         .catch((err) => {
           errHandler(err)
         });
-
-      setMessage('');
+    }else{
+      toast.error("Can't send empty message")
     }
   };
 
@@ -38,8 +45,7 @@ function ChatBox() {
       <i className="fa-regular fa-face-smile p-2 fs-4"></i>
       <i className="fa-solid fa-paperclip p-2 fs-4"></i>
       <input
-        className="search bg-white p-2"
-        // style={{width: '85%'}}
+        className="search bg-white p-2 chat-input"
         type="text"
         placeholder="Type a Message"
         value={message}

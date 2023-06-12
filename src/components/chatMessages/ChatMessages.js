@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
 import Loader from '../shared/Loader';
@@ -7,7 +7,7 @@ import { setMessages } from '../../store/slices/data';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ConvoTop from '../convoTop/ConvoTop';
 import MessageItem from './MessageItem'
-import { errHandler } from '../../helpers/logouthelper';
+import { MyContext } from '../../pages/dashboard/dashboard'
 
 function ChatMessages() {
   const dispatch = useDispatch();
@@ -17,13 +17,14 @@ function ChatMessages() {
   const [hasMore, setHasMore] = useState(true);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
+  const errHandler = React.useContext(MyContext);
 
   useEffect(() => {
     if (currentRoom) {
       RoomApi.getAllMessages(currentRoom, 1)
         .then((res) => {
-          dispatch(setMessages(res.data));
-          setHasMore(res.data.length >= 10);
+          dispatch(setMessages(res.data.messages));
+          setHasMore(res.data.messages.length >= 10);
           setLimit(20);
           setPage(2);
         })
@@ -36,23 +37,23 @@ function ChatMessages() {
   const fetchData = () => {
     RoomApi.getAllMessages(currentRoom, page)
       .then((res) => {
-        let newMessages = [...messages,...res.data]
+        let newMessages = [...messages, ...res.data.messages]
         dispatch(setMessages(newMessages));
         if (newMessages.length < limit) {
           setHasMore(false);
         }
-        setLimit(limit+10)
-        setPage(page+1)
+        setLimit(limit + 10)
+        setPage(page + 1)
       })
       .catch((err) => {
-        console.log(err);
+        errHandler(err)
       });
   };
 
 
   if (messages != null) {
     return (
-      <div className="container chat-messages p-3 pb-5 h-75 overflow-scroll">
+      <div className="container chat-messages p-4 pb-5 overflow-scroll">
         <div
           id="scrollableDiv"
           style={{
@@ -68,18 +69,19 @@ function ChatMessages() {
             style={{ display: 'flex', flexDirection: 'column-reverse' }}
             inverse={true}
             hasMore={hasMore}
-            loader={<Loader/>}
+            loader={<Loader />}
             scrollableTarget="scrollableDiv"
-            endMessage={<ConvoTop/>}
+            endMessage={<ConvoTop />}
+            className='infinite-scroll'
           >
-          {messages.map((message, index) => (
-            message.user_id === currentUser.id ? (
-              <MessageItem key={index} message={message} messageClass={'sender-msg'} alignmentClass={'align-items-end'} />
-            ) : (
-              <MessageItem key={index} message={message} messageClass={'receiver-msg'} alignmentClass={'align-items-start'} />
-            )
-          ))}
-          </InfiniteScroll> 
+            {messages.map((message, index) => (
+              message.user_id === currentUser.id ? (
+                <MessageItem key={index} message={message} messageClass={'sender-msg'} alignmentClass={'align-items-end'} />
+              ) : (
+                <MessageItem key={index} message={message} messageClass={'receiver-msg'} alignmentClass={'align-items-start'} />
+              )
+            ))}
+          </InfiniteScroll>
         </div>
       </div>
     );

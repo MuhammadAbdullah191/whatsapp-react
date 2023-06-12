@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import { UserApi } from "../../apis/user/user";
 import { useNavigate } from "react-router-dom";
-import { AuthApi } from "../../apis/auth/authApi";
 import SvgIcon from "../../components/shared/svgIcon";
 import Loader from "../../components/shared/Loader";
 import { getLocalStorage } from "../../helpers/localStorage";
+import { toast } from "react-toastify";
 
 function Login() {
 	const navigate = useNavigate();
 	const [inputValue, setInputValue] = useState('');
-	const [isValid, setIsValid] = useState(true);
 	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
@@ -30,16 +29,16 @@ function Login() {
 
     if (phoneRegex.test(inputValue)) {
       console.log('getting otp')
-			setIsValid(true);
 			UserApi.sendOtp(inputValue).then((res)=>{
 				navigate(`/verifyOtp?phone=${inputValue}`);
+				toast("Otp sent successfully!");
 			}).catch((err)=>{
 				console.log(err)
+				toast(err.response.data.message)
 			})
 
     } else {
-      console.log('Invalid phone number:', inputValue);
-      setIsValid(false);
+			toast('Invalid phone number')
     }
 	}
 
@@ -65,7 +64,6 @@ function Login() {
 						<div class="mt-2 text-center">
 							<input type="text" class="form-control bottom-border-input" id="exampleInput" placeholder="Enter your Number" value={inputValue}
 							onChange={handleChange}/>
-							{ !isValid && <div className="text-danger"> Please enter a valid phone number.</div> }
 							<button type="button" class="btn btn-outline-success mt-2 px-5" onClick={getOtp}>Next</button>
 						</div>
 					</div>

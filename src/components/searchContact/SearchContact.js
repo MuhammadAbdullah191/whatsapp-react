@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import { CrudApi } from '../../apis/shared/crudApi';
 import { useDispatch } from 'react-redux';
 import { setContacts } from '../../store/slices/data';
-import { errHandler } from '../../helpers/logouthelper';
+import { toast } from 'react-toastify';
+import { MyContext } from '../../pages/dashboard/dashboard'
 
 function SearchContact() {
 	const dispatch = useDispatch()
   const [searchValue, setSearchValue] = useState('');
+  const errHandler = React.useContext(MyContext);
 
   const handleSearch = () => {
     CrudApi.getAll('users',searchValue)
       .then((res) => {
 				dispatch(setContacts(res.data.users))
+        toast('Search Successful')
       })
       .catch((err) => {
         errHandler(err)
@@ -19,7 +22,12 @@ function SearchContact() {
   };
 
   const handleChange = (event) => {
-    setSearchValue(event.target.value);
+    const value = event.target.value;
+    setSearchValue(value);
+  
+    if (value === '') {
+      handleSearch();
+    }
   };
 
   return (

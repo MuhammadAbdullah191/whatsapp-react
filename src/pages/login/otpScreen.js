@@ -3,10 +3,10 @@ import { UserApi } from "../../apis/user/user";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import SvgIcon from "../../components/shared/svgIcon";
-import { AuthApi } from "../../apis/auth/authApi";
 import { setLocalStorage } from "../../helpers/localStorage";
 import { Link } from "react-router-dom";
 import { getLocalStorage } from "../../helpers/localStorage";
+import { toast } from "react-toastify";
 
 function OtpScreen() {
 	const location = useLocation();
@@ -14,9 +14,6 @@ function OtpScreen() {
   const phone = queryParams.get('phone');
 	const navigate = useNavigate();
 	const [inputValue, setInputValue] = useState('');
-	const [isValid, setIsValid] = useState(true);
-	const [errMessage, setErrMessage] = useState(null);
-	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		const token = getLocalStorage('token')
@@ -36,7 +33,6 @@ function OtpScreen() {
 
     if (regex.test(inputValue)) {
       console.log('verifying otp')
-			setIsValid(true);
 
 			UserApi.verifyOtp(phone, inputValue)
 				.then((res)=>{
@@ -44,14 +40,14 @@ function OtpScreen() {
 						setLocalStorage('user',res.data.user)
 						setLocalStorage('token',res.data.token)
 						navigate(`/`);
+						toast("Otp Verified Successfully!");
 					}
 				}).catch((err)=>{
-					setErrMessage(true)
+					toast(err.response.data.message)
 				})
 
     } else {
-			setErrMessage(null)
-      setIsValid(false);
+			toast('OTP must be 6 digit number')
     }
 	}
 
@@ -74,8 +70,6 @@ function OtpScreen() {
 						<div class="mt-2 text-center">
 							<input type="text" class="form-control bottom-border-input" id="exampleInput" placeholder="Enter OTP" value={inputValue}
 							onChange={handleChange}/>
-							{ !isValid && <div className="text-danger"> Please enter a valid OTP.</div> }
-							{ errMessage && <div className="text-danger"> You have entred the wrong OTP, please try again</div> }
 							<button type="button" class="btn btn-outline-success mt-2 px-5" onClick={verifyOtp}>Verify</button>
 						</div>
 					</div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Loader from '../../components/shared/Loader';
 import { UserApi } from '../../apis/user/user';
@@ -8,13 +8,19 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setLocalStorage } from '../../helpers/localStorage';
 import { getAvatarUrl } from '../../helpers/avatarUrl';
+import { toast } from 'react-toastify';
 
 function ProfileEdit() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.data.currentUser);
-  const [username, setUsername] = useState(currentUser.username);
-  const [status, setStatus] = useState(currentUser.status);
+  const [username, setUsername] = useState(null);
+  const [status, setStatus] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(()=>{
+    setUsername(currentUser?.username)
+    setStatus(currentUser?.status)
+  },[currentUser])
 
   const handleRemovePhoto = () => {
     const confirmed = window.confirm('Are you sure you want to remove the photo?');
@@ -23,16 +29,24 @@ function ProfileEdit() {
         if (res.status === 200) {
           setLocalStorage('user',res.data.user)
           dispatch(setUser(res.data.user));
+          toast('Image Removed Successfully')
         }
       })
       .catch((err) => {
         console.log(err);
+        toast('Could not remove image due to', err?.message)
       });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (username.trim() === '' || status.trim() === '') {
+      toast.error('Username and status cannot be empty');
+      return;
+    }
+    
     let data = {
       user: {
         username: username,
@@ -43,15 +57,17 @@ function ProfileEdit() {
 
     UserApi.updateUser(currentUser.id, data)
       .then((res) => {
+        console.log(res)
         if (res.status === 200) {
           setSelectedImage(null);
           setLocalStorage('user',res.data.user)
           dispatch(setUser(res.data.user));
           document.getElementById('imageInput').value = '';
+          toast('Your profile has been updated successfully')
         }
       })
       .catch((err) => {
-        console.log(err);
+        toast(err?.response?.data?.message)
       });
   };
 

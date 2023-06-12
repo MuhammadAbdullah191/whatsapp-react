@@ -132,3 +132,36 @@
 	width: 100px;
 	height: 100px;
 }
+
+.chat-messages{
+	height: 88%;
+}
+
+.chat-input {
+  width: 85%;
+}
+
+@media (max-width: 1300px) {
+  .chat-input {
+    width: 75%;
+  }
+}
+
+@media (max-width: 1050px) {
+  .chat-input {
+    width: 65%;
+  }
+}
+
+@media (max-width: 900px) {
+  .chat-input {
+    width: 50%;
+  }
+}
+
+@media (max-width: 750px) {
+  .chat-input {
+    width: 25%;
+  }
+}
+

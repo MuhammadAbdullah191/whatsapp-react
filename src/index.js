@@ -5,13 +5,14 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './store/store'; // Import your Redux store
 import AppRouter from './routes/AppRouter';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
       <AppRouter />
-    </React.StrictMode>
+      <ToastContainer />
   </Provider>
 );
 
