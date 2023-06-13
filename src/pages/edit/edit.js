@@ -6,8 +6,8 @@ import { UserApi } from '../../apis/user/user';
 import { setUser } from '../../store/slices/data';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setLocalStorage } from '../../helpers/localStorage';
-import { getAvatarUrl } from '../../helpers/avatarUrl';
+import { setLocalStorage } from '../../helpers/localStorageHelper';
+import { getAvatarUrl } from '../../helpers/avatarHelper';
 import { toast } from 'react-toastify';
 
 function ProfileEdit() {
@@ -17,25 +17,25 @@ function ProfileEdit() {
   const [status, setStatus] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     setUsername(currentUser?.username)
     setStatus(currentUser?.status)
-  },[currentUser])
+  }, [currentUser])
 
   const handleRemovePhoto = () => {
     const confirmed = window.confirm('Are you sure you want to remove the photo?');
     if (confirmed) {
       UserApi.removeImage(currentUser.id).then((res) => {
         if (res.status === 200) {
-          setLocalStorage('user',res.data.user)
+          setLocalStorage('user', res.data.user)
           dispatch(setUser(res.data.user));
           toast('Image Removed Successfully')
         }
       })
-      .catch((err) => {
-        console.log(err);
-        toast('Could not remove image due to', err?.message)
-      });
+        .catch((err) => {
+          console.log(err);
+          toast('Could not remove image due to', err?.message)
+        });
     }
   };
 
@@ -46,7 +46,7 @@ function ProfileEdit() {
       toast.error('Username and status cannot be empty');
       return;
     }
-    
+
     let data = {
       user: {
         username: username,
@@ -60,7 +60,7 @@ function ProfileEdit() {
         console.log(res)
         if (res.status === 200) {
           setSelectedImage(null);
-          setLocalStorage('user',res.data.user)
+          setLocalStorage('user', res.data.user)
           dispatch(setUser(res.data.user));
           document.getElementById('imageInput').value = '';
           toast('Your profile has been updated successfully')

@@ -1,26 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { CrudApi } from '../../apis/shared/crudApi';
 import Loader from '../shared/Loader';
 import { useDispatch } from 'react-redux';
-import { setRoom, setContacts, setSelectedContact, setUser, setTest } from '../../store/slices/data';
+import { setRoom, setContacts, setSelectedContact, setUser, setNewMessage } from '../../store/slices/data';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
 import consumer from '../../cable';
-import { getAvatarUrl } from '../../helpers/avatarUrl';
-import { useNavigate } from "react-router-dom";
-import { getLocalStorage, removeLocalStorage } from "./../../helpers/localStorage"
+import { getAvatarUrl } from '../../helpers/avatarHelper';
+import { getLocalStorage } from "../../helpers/localStorageHelper"
 import { MyContext } from '../../pages/dashboard/dashboard'
 import { toast } from 'react-toastify';
 
 function ShowContacts() {
-  const messages = useSelector((state) => {
-    return state.data.messages
-  });
   const currentUser = useSelector((state) => state.data.currentUser);
-  const currentRoom = useSelector((state) => state.data.currentRoom);
   const contacts = useSelector((state) => state.data.contacts);
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const errHandler = React.useContext(MyContext);
 
   useEffect(() => {
@@ -37,6 +31,9 @@ function ShowContacts() {
   }, [errHandler]);
 
   const truncateUsername = (username) => {
+    if ( !username ){
+      return 'N/A'
+    }
     if (username && username.length > 10) {
       return username.substring(0, 10) + '...';
     }
@@ -61,7 +58,7 @@ function ShowContacts() {
           },
           received: (data) => {
             console.log('Received data from Action Cable:', data);
-            dispatch(setTest(data.message))
+            dispatch(setNewMessage(data.message))
           },
         });
       }).catch((err) => {

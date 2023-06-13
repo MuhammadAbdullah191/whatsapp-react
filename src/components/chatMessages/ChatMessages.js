@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RoomApi } from '../../apis/room/room';
 import Loader from '../shared/Loader';
@@ -24,7 +24,7 @@ function ChatMessages() {
       RoomApi.getAllMessages(currentRoom, 1)
         .then((res) => {
           dispatch(setMessages(res.data.messages));
-          setHasMore(res.data.messages.length >= 10);
+          setHasMore(res.data.messages.length >= 15);
           setLimit(20);
           setPage(2);
         })
@@ -42,7 +42,7 @@ function ChatMessages() {
         if (newMessages.length < limit) {
           setHasMore(false);
         }
-        setLimit(limit + 10)
+        setLimit(limit + 15)
         setPage(page + 1)
       })
       .catch((err) => {

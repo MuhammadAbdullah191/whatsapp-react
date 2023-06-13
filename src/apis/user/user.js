@@ -28,10 +28,10 @@ export const UserApi = {
   },
 
   removeImage: (id) => {
-		return axiosInstance.request({
+    return axiosInstance.request({
       method: 'delete',
       url: `/users/${id}?delete=image`,
     });
-	}
+  }
 
 };

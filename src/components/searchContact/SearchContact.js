@@ -6,26 +6,38 @@ import { toast } from 'react-toastify';
 import { MyContext } from '../../pages/dashboard/dashboard'
 
 function SearchContact() {
-	const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const [searchValue, setSearchValue] = useState('');
+  const [disabled, setDisabled] = useState(true);
   const errHandler = React.useContext(MyContext);
 
   const handleSearch = () => {
-    CrudApi.getAll('users',searchValue)
-      .then((res) => {
-				dispatch(setContacts(res.data.users))
-        toast('Search Successful')
-      })
-      .catch((err) => {
-        errHandler(err)
-      });
+    if(!disabled){
+      CrudApi.getAll('users', searchValue)
+        .then((res) => {
+          dispatch(setContacts(res.data.users))
+          toast('Search Successful')
+        })
+        .catch((err) => {
+          errHandler(err)
+        });
+    }
   };
 
   const handleChange = (event) => {
     const value = event.target.value;
     setSearchValue(value);
-  
+
     if (value === '') {
+      handleSearch();
+      setDisabled(true)
+    }else{
+      setDisabled(false)
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
       handleSearch();
     }
   };
@@ -38,6 +50,7 @@ function SearchContact() {
         placeholder="Search or start a new chat"
         value={searchValue}
         onChange={handleChange}
+        onKeyPress={handleKeyPress}
       />
       <i className="fas fa-search search-icon" onClick={handleSearch}></i>
     </div>

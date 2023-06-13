@@ -14,14 +14,14 @@ function Chat() {
     return contacts.find(contact => contact.id === selectedContact);
   }
 
-  if(contacts){
+  if (contacts) {
     contact = findContactById(contacts);
   }
 
-  if(currentRoom && contact){
+  if (currentRoom && contact) {
     return (
       <div className="d-flex flex-column vh-100">
-        <ChatHeader contact = {contact}/>
+        <ChatHeader contact={contact} />
         <div className="chat-background h-100">
           <ChatMessages />
         </div>
@@ -30,9 +30,9 @@ function Chat() {
         </div>
       </div>
     );
-  }else{
-    return(
-      <Landing/>
+  } else {
+    return (
+      <Landing />
     )
   }
 }

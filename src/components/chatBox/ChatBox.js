@@ -6,7 +6,6 @@ import { MyContext } from '../../pages/dashboard/dashboard'
 import { scrollHelper } from '../../helpers/animationHelper';
 
 function ChatBox() {
-  const messages = useSelector((state) => state.data.messages);
   const [message, setMessage] = useState('');
   const currentUser = useSelector((state) => state.data.currentUser);
   const currentRoom = useSelector((state) => state.data.currentRoom);
@@ -29,13 +28,13 @@ function ChatBox() {
           toast('Message sent successfully')
           setTimeout(() => {
             scrollHelper()
-          },100)
+          }, 100)
           setMessage('');
         })
         .catch((err) => {
           errHandler(err)
         });
-    }else{
+    } else {
       toast.error("Can't send empty message")
     }
   };
