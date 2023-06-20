@@ -48,11 +48,9 @@ function ProfileEdit() {
     }
 
     let data = {
-      user: {
-        username: username,
-        status: status,
-        avatar: selectedImage,
-      },
+      username: username,
+      status: status,
+      avatar: selectedImage,
     };
 
     UserApi.updateUser(currentUser.id, data)

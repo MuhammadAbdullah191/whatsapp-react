@@ -144,6 +144,10 @@
   word-break: break-all;
 }
 
+.fa-paperclip:hover{
+  background-color: rgb(211,211,211);
+}
+
 @media (max-width: 1300px) {
   .chat-input {
     width: 75%;

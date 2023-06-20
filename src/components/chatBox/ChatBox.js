@@ -42,7 +42,7 @@ function ChatBox() {
   return (
     <div className="d-flex justify-content-start align-items-center p-2 border-bottom profile-header w-100">
       <i className="fa-regular fa-face-smile p-2 fs-4"></i>
-      <i className="fa-solid fa-paperclip p-2 fs-4"></i>
+      <i className="fa-solid fa-paperclip p-2 mx-1 fs-4"></i>
       <input
         className="search bg-white p-2 chat-input"
         type="text"

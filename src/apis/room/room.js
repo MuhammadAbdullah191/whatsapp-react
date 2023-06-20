@@ -19,10 +19,8 @@ export const RoomApi = {
       method: 'Post',
       url: `/rooms/${room_id}/messages`,
       data: {
-        message: {
-          content: content,
-          user_id: user_id
-        }
+        content: content,
+        user_id: user_id
       }
     });
   }

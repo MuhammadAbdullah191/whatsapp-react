@@ -46,7 +46,7 @@ function ShowContacts() {
     });
     RoomApi.getCurrentRoom(currentUser.id, e)
       .then((res) => {
-        const room_id = JSON.parse(res.data.room).id
+        const room_id = res.data.room.id
         dispatch(setRoom(room_id));
         dispatch(setSelectedContact(e));
         const channel = consumer.subscriptions.create({ channel: "ChatChannel", room_id: room_id }, {
@@ -68,7 +68,7 @@ function ShowContacts() {
 
   if (contacts) {
     return (
-      <div className="contacts pe-2 h-100 overflow-scroll">
+      <div className="contacts pe-2 h-75 overflow-scroll">
         {contacts.map((contact, index) => {
           if (currentUser?.id === contact.id) {
             return null;
