@@ -1,24 +1,173 @@
 .App {
-  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.profile-header {
+  background-color: rgb(240, 242, 245)
 }
 
-.App-header {
+.profile-header-logo {
+  height: 40px;
+  width: 40px;
+}
+
+.convo-img {
+  height: 50px;
+  width: 50px;
+}
+
+.search {
+  position: relative;
+  padding: 3px;
+  background-color: rgb(240, 242, 245);
+  border-style: solid;
+  border: none;
+  height: 35px;
+  border-radius: 5px;
+  padding-left: 35px;
+}
+
+.white-bg {
   background-color: white;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: black;
 }
 
-.App-link {
-  color: #61dafb;
+.search:focus {
+  outline: none;
 }
 
+.search-icon {
+  position: absolute;
+  left: 20px;
+  margin-top: 9px;
+}
+
+.convo:hover {
+  background-color: rgb(240, 242, 245);
+  cursor: pointer;
+}
+
+.convo-heading {
+  font-weight: 600;
+}
+
+.convo-time {
+  font-size: 12px;
+}
+
+.chat-background {
+  background-image: url("/src/assets/background.jpeg");
+  background-size: contain;
+}
+
+.message {
+  max-width: 50%;
+}
+
+.sender-msg {
+  float: right;
+  background-color: rgb(218, 252, 212);
+}
+
+.receiver-msg {
+  background-color: white;
+}
+
+.green-bg {
+  background-color: rgb(25, 167, 133);
+  height: 30vh;
+}
+
+.grey-bg {
+  height: 70vh;
+  background-color: rgb(240, 242, 245)
+}
+
+.login-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: 10vh 20vh 10vh 20vh;
+}
+
+.login-card {}
+
+.fa-whatsapp {
+  color: rgb(37, 228, 123);
+}
+
+.fa-whatsapp-bg {
+  background-color: rgb(254, 238, 207);
+}
+
+.bottom-border-input {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #ced4da;
+  padding: 0.375rem 0.75rem;
+}
+
+.form-control:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ced4da;
+}
+
+.profile-width {
+  width: 20vw;
+  min-width: 313px;
+}
+
+.chat-width {
+  width: 80vw;
+  min-width: none;
+}
+
+.edit-img {
+  width: 100px;
+  height: 100px;
+}
+
+.chat-messages {
+  height: 88%;
+}
+
+.chat-input {
+  width: 85%;
+}
+
+.custom-message-class {
+  max-width: 50vw;
+  word-break: break-all;
+}
+
+.fa-paperclip:hover{
+  background-color: rgb(211,211,211);
+}
+
+@media (max-width: 1300px) {
+  .chat-input {
+    width: 75%;
+  }
+}
+
+@media (max-width: 1050px) {
+  .chat-input {
+    width: 65%;
+  }
+}
+
+@media (max-width: 900px) {
+  .chat-input {
+    width: 50%;
+  }
+}
+
+@media (max-width: 750px) {
+  .chat-input {
+    width: 25%;
+  }
+}
